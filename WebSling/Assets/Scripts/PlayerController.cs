@@ -8,6 +8,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jump;
 
+    private float xInput;
+
+    private bool onWeb = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,21 +21,20 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.A))
+        xInput = Input.GetAxis("Horizontal");
+      
+        if(Input.GetAxis("Horizontal") != 0)
         {
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
-        }
-        if(Input.GetKey(KeyCode.D))
-        {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.velocity = new Vector2(speed * xInput, rb.velocity.y);
         }
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            rb.velocity = new Vector2(rb.velocity.x, jump*10);
+            rb.velocity = new Vector2(rb.velocity.x, jump);
         }
 
     }
 
-   
+
 }

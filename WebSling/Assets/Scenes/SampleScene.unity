@@ -497,8 +497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 694667915}
-  speed: 5
-  jump: 5
+  speed: 10
+  jump: 50
 --- !u!1 &1053405682
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,13 +780,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3761974716883697996, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
+      propertyPath: m_Radius
+      value: 0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761974716883697996, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761974716883697996, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3761974716883697997, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
       propertyPath: m_Mass
       value: 0.7853982
       objectReference: {fileID: 0}
     - target: {fileID: 3761974716883697997, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761974716883697997, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761974716883697997, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
       propertyPath: m_LinearDrag
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3761974716883697997, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3761974716883697997, guid: 0b249754a1b673b49bc2d12857aa1f0f, type: 3}
       propertyPath: m_UseAutoMass

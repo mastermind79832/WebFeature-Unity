@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WebSpwanScript : MonoBehaviour
 {
+    
     [Header("Prefabs")]
     [SerializeField]private GameObject player;
     //[SerializeField]private GameObject webPrefab;
@@ -14,22 +15,17 @@ public class WebSpwanScript : MonoBehaviour
     [SerializeField] private Material WebMaterial;   
     private GameObject web;
     private LineRenderer lr;            
-
-    [SerializeReference]
     private Vector3 startPoint;        // has the 2 positions needed for line renderer
-    [SerializeReference]
+
     private Vector3 endPoint;
-    
+    private const string WEB_TAG = "Web";
+
     private bool isFirstClick = false;
     private bool isSecondClick = false;
 
-
     RaycastHit2D hit2D;
-
-    [SerializeReference]
+    
     private Vector3 worldPosition;      // postion of mouse in the World
-
-    [SerializeReference]
     private float hitData;
 
     // Start is called before the first frame update
@@ -46,22 +42,22 @@ public class WebSpwanScript : MonoBehaviour
     
         if(Input.GetMouseButtonDown(0))
         {  
-            if(!isFirstClick && !isSecondClick)
+            if(!isFirstClick && !isSecondClick)         // to start The web
             {   
-                Debug.Log("FirstClick");
+                // Debug.Log("FirstClick");
                 startPoint = Vector2.zero;
                 endPoint = Vector2.zero;
                 LoadWeb();
                 SetBools(true,false);
             }
-            else if(isFirstClick)
+            else if(isFirstClick)                       // To get the next position
             {
-                Debug.Log("isSecondclick");
+                // Debug.Log("isSecondclick");
                 SetBools(false,true);    
-            }
-            else if(isSecondClick)
+            }   
+            else if(isSecondClick)                      // To finialize the web
             {
-                Debug.Log("clickConfirm");
+                // Debug.Log("clickConfirm");
                 CreateWeb();
                 SetBools(false,false);
             }
@@ -97,7 +93,7 @@ public class WebSpwanScript : MonoBehaviour
         for(int i= 0;i< transform.childCount; i++)
             transform.GetChild(i).GetComponent<PlatformEffector2D>().surfaceArc = 0;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
 
         for(int i= 0;i< transform.childCount; i++)
             transform.GetChild(i).GetComponent<PlatformEffector2D>().surfaceArc = 180;
@@ -111,8 +107,7 @@ public class WebSpwanScript : MonoBehaviour
 
     private void AimWeb()
     {
-    //    Debug.Log("Aim Loaded");
-       
+    //    Debug.Log("Aim Loaded");   
         hit2D = Physics2D.Raycast(player.transform.position,worldPosition,100f,LayerMask.GetMask("Web","Ground"));
         startPoint = player.transform.position;
         endPoint = hit2D.point;
@@ -149,8 +144,7 @@ public class WebSpwanScript : MonoBehaviour
         col.size = size;
         col.usedByEffector = true;
 
-
-        web.AddComponent<PlatformEffector2D>();
+        web.AddComponent<PlatformEffector2D>().useSideFriction = true;
 
         web.transform.parent = transform;
         web = null;
@@ -165,9 +159,9 @@ public class WebSpwanScript : MonoBehaviour
 
     private void LoadWeb()
     {
-        Debug.Log("Web Loaded");
         web =  new GameObject("Web");
         web.layer = LayerMask.NameToLayer("Web");
+        web.transform.tag = WEB_TAG;
         web.transform.position = Vector2.zero; 
         lr = web.AddComponent<LineRenderer>();
         lr.startWidth = lineWidth;
