@@ -15,8 +15,10 @@ public class WebSpwanScript : MonoBehaviour
     [SerializeField] private Material WebMaterial;   
     private GameObject web;
     private LineRenderer lr;            
-    private Vector3 startPoint;        // has the 2 positions needed for line renderer
 
+    [SerializeField]
+    private Vector3 startPoint;        // has the 2 positions needed for line renderer
+    [SerializeField]
     private Vector3 endPoint;
     private const string WEB_TAG = "Web";
 
@@ -24,7 +26,8 @@ public class WebSpwanScript : MonoBehaviour
     private bool isSecondClick = false;
 
     RaycastHit2D hit2D;
-    
+
+    [SerializeField]  
     private Vector3 worldPosition;      // postion of mouse in the World
     private float hitData;
 
@@ -37,8 +40,11 @@ public class WebSpwanScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
-        worldPosition.z = 0;
+        Vector2 mousePos;
+        Vector2 mouse = Input.mousePosition;
+        mousePos = Camera.main.ScreenToWorldPoint(mouse); 
+        worldPosition = new Vector3(mousePos.x,mousePos.y,0);
+
     
         if(Input.GetMouseButtonDown(0))
         {  
@@ -108,9 +114,12 @@ public class WebSpwanScript : MonoBehaviour
     private void AimWeb()
     {
     //    Debug.Log("Aim Loaded");   
-        hit2D = Physics2D.Raycast(player.transform.position,worldPosition,100f,LayerMask.GetMask("Web","Ground"));
+        Vector2 dir = worldPosition - player.transform.position;
+        hit2D = Physics2D.Raycast(player.transform.position,dir,100f,LayerMask.GetMask("Web","Ground"));
+        
         startPoint = player.transform.position;
         endPoint = hit2D.point;
+        Debug.DrawRay(startPoint,endPoint,Color.red,2f);
         lr.SetPosition(0,startPoint);
         lr.SetPosition(1,endPoint); 
        // lr.SetPosition(1,worldPosition);
@@ -119,16 +128,23 @@ public class WebSpwanScript : MonoBehaviour
     private void FinializeWeb()
     {
     //    Debug.Log("Filianize Web");
-        hit2D = Physics2D.Raycast(player.transform.position,worldPosition,100f,LayerMask.GetMask("Web","Ground"));
+        Vector2 dir =  worldPosition - player.transform.position;
+        hit2D = Physics2D.Raycast(player.transform.position,dir,100f,LayerMask.GetMask("Web","Ground"));
         startPoint = hit2D.point;
-        lr.SetPosition(0,startPoint);
-        lr.SetPosition(1,endPoint);
+        lr.SetPosition(0,endPoint);
+        lr.SetPosition(1,player.transform.position);
+        lr.positionCount = 3;
+        lr.SetPosition(2,hit2D.point);
      //   lr.SetPosition(1,worldPosition);
 
     }
 
     private void CreateWeb()
     {
+        lr.positionCount = 2;
+        lr.SetPosition(0,startPoint);
+        lr.SetPosition(1,endPoint);
+
         web.transform.position = GetWebPosition();
         // change rotation
         float angle = Mathf.Atan2(lr.GetPosition(1).y -lr.GetPosition(0).y,lr.GetPosition(1).x -lr.GetPosition(0).x) * 180 /Mathf.PI;
@@ -159,7 +175,7 @@ public class WebSpwanScript : MonoBehaviour
 
     private void LoadWeb()
     {
-        web =  new GameObject("Web");
+        web =  new GameObject(string.Format("Web {0}", transform.childCount +1));
         web.layer = LayerMask.NameToLayer("Web");
         web.transform.tag = WEB_TAG;
         web.transform.position = Vector2.zero; 

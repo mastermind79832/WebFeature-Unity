@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
       
         if(Input.GetAxis("Horizontal") != 0)
         {
-            rb.constraints = RigidbodyConstraints2D.None;
             rb.velocity = new Vector2(speed * xInput, rb.velocity.y);
         }
 
@@ -34,6 +33,18 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jump);
         }
 
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if(other.transform.tag == "Web")
+            rb.gravityScale = 0;
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+         if(other.transform.tag == "Web")
+            rb.gravityScale = 10;
     }
 
 
